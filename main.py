@@ -35,7 +35,8 @@ class User:
         response = requests.get('https://api.vk.com/method/friends.get', params=params)
         return response.json()['response']['items']
 
-    def common_friends(self, another):
+    def __and__(self, another):
+
         fl1 = self.friend_list()
         fl2 = another.friend_list()
 
@@ -57,13 +58,13 @@ def print_friend_list(flist):
         print('Похоже, у этих пользователей нет общих друзей')
 
 
-wanted_ids = input('Введите идентификаторы пользователей, разделенные знаком "&", окруженным пробелами: ')
-wanted_ids = wanted_ids.split(' & ')
+wanted_ids = input('Введите идентификаторы пользователей, разделенные пробелом: ')
+wanted_ids = wanted_ids.split(' ')
 
 id1 = User(wanted_ids[0])
 id2 = User(wanted_ids[1])
 
-common_friend_list = id1.common_friends(id2)
+common_friend_list = id1 & id2
 
 print_friend_list(common_friend_list)
 
